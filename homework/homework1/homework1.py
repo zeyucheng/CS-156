@@ -2,7 +2,7 @@
 # Name:        homework1
 # Purpose:     Practice writing Python functions
 #
-# Author:
+# Author:      Juan Castillo
 # -----------------------------------------------------------------------------
 """
 Implement some helper functions that will be useful in subsequent assignments
@@ -17,7 +17,7 @@ def manhattan_distance(point1, point2):
     :return: (integer)  The Manhattan distance between the two points
     """
     # Enter your code here and remove the pass statement below
-    pass
+    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1]);
 
 
 def min_distance(point1, other_points):
@@ -29,8 +29,10 @@ def min_distance(point1, other_points):
     points
 
     """
-    # Enter your code here and remove the pass statement below
-    pass
+    distances = [manhattan_distance(point1, point) for point in other_points]
+    if not distances:
+        return None;
+    return min(distances);
 
 
 def farthest_point(point1, other_points):
@@ -42,8 +44,10 @@ def farthest_point(point1, other_points):
     :return: (tuple) the coordinates of the farthest point to point1
 
     """
-    # Enter your code here and remove the pass statement below
-    pass
+    if other_points:
+        "I coded this buy don't really understand it"
+        return  max(other_points, key = lambda point: manhattan_distance(point1, point))
+    return None;
 
 
 def farthest_distance(points):
@@ -54,5 +58,11 @@ def farthest_distance(points):
     :return: (integer) maximum Manhattan distance between any two points
     in the list given.
     """
-    # Enter your code here and remove the pass statement below
-    pass
+    if points:
+        distances = []
+        index = 1
+        for point in points:
+            distances += ([manhattan_distance(point, point2) for point2 in points[index:]])
+            index = index + 1
+        return max(distances);
+    return 0
