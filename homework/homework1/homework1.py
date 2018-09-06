@@ -17,7 +17,7 @@ def manhattan_distance(point1, point2):
     :return: (integer)  The Manhattan distance between the two points
     """
     # Enter your code here and remove the pass statement below
-    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1]);
+    return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
 
 
 def min_distance(point1, other_points):
@@ -29,10 +29,9 @@ def min_distance(point1, other_points):
     points
 
     """
-    distances = [manhattan_distance(point1, point) for point in other_points]
-    if not distances:
-        return None;
-    return min(distances);
+    if other_points:
+        return min([manhattan_distance(point1, point) for point in other_points])
+    return None
 
 
 def farthest_point(point1, other_points):
@@ -46,8 +45,8 @@ def farthest_point(point1, other_points):
     """
     if other_points:
         "I coded this buy don't really understand it"
-        return  max(other_points, key = lambda point: manhattan_distance(point1, point))
-    return None;
+        return max(other_points, key=lambda point: manhattan_distance(point1, point))
+    return None
 
 
 def farthest_distance(points):
@@ -64,5 +63,5 @@ def farthest_distance(points):
         for point in points:
             distances += ([manhattan_distance(point, point2) for point2 in points[index:]])
             index = index + 1
-        return max(distances);
+        return max(distances)
     return 0
