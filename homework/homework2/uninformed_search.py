@@ -53,7 +53,23 @@ def bfs(problem):
             or None if there is no solution
     """
     # Enter your code here and remove the pass statement below
-    pass
+    closed = set()
+    fringe = data_structures.Queue()
+    state = problem.start_state()
+    root = data_structures.Node(state)
+    fringe.push(root)
+
+    while True:
+        if fringe.is_empty():
+            return None
+        node = fringe.pop()
+        if problem.is_goal(node.state):
+            return node.solution()
+        if node.state not in closed:
+            closed.add(node.state)
+            for child_state, action, action_cost in problem.successors(node.state):
+                child_node = data_structures.Node(child_state, node, action)
+                fringe.push(child_node)
 
 
 def ucs(problem):
@@ -66,6 +82,24 @@ def ucs(problem):
     :return: list of actions representing the solution to the quest
     """
     # Enter your code here and remove the pass statement below
-    pass
+    closed = set()
+    fringe = data_structures.PriorityQueue()
+    state = problem.start_state()
+    root = data_structures.Node(state)
+    fringe.push(root, 0)
+
+    while True:
+        if fringe.is_empty():
+            return None
+        node = fringe.pop()
+        if problem.is_goal(node.state):
+            return node.solution()
+        if node.state not in closed:
+            closed.add(node.state)
+            for child_state, action, action_cost in problem.successors(node.state):
+                child_node = data_structures.Node(child_state, node, action)
+                fringe.push(child_node, action_cost)
+
+
 
 
