@@ -98,7 +98,8 @@ def ucs(problem):
             closed.add(node.state)
             for child_state, action, action_cost in problem.successors(node.state):
                 child_node = data_structures.Node(child_state, node, action)
-                fringe.push(child_node, action_cost)
+                child_node.cumulative_cost = node.cumulative_cost + action_cost
+                fringe.push(child_node, child_node.cumulative_cost)
 
 
 
