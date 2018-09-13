@@ -13,6 +13,7 @@ Your task for homework 2 is to implement bfs and ucs.
 """
 import data_structures
 
+
 def dfs(problem):
     """
     Depth first graph search algorithm - implemented for you
@@ -24,7 +25,7 @@ def dfs(problem):
                 or None if there is no solution
     """
     closed = set()  # keep track of our explored states
-    fringe = data_structures.Stack() # for dfs, the fringe is a stack
+    fringe = data_structures.Stack()  # for dfs, the fringe is a stack
     state = problem.start_state()
     root = data_structures.Node(state)
     fringe.push(root)
@@ -100,7 +101,3 @@ def ucs(problem):
                 child_node = data_structures.Node(child_state, node, action)
                 child_node.cumulative_cost = node.cumulative_cost + action_cost
                 fringe.push(child_node, child_node.cumulative_cost)
-
-
-
-
