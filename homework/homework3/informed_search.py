@@ -82,8 +82,11 @@ def null_heuristic(state, problem):
 
 def single_heuristic(state, problem):
     """
-    Fill in the docstring here
-    :param 
+    A simple heuristic for a single medal that finds the manhattan distance
+    This heuristic is admissible because the manhattan distance does not account for the cost
+    of the increased cost of the East and West direction thus being optimistic
+    .
+    :param
     state: A state is represented by a tuple containing:
                 the current position (row, column) of Sammy the Spartan
                 a tuple containing the positions of the remaining medals
@@ -99,7 +102,8 @@ def single_heuristic(state, problem):
 
 def better_heuristic(state, problem):
     """
-    Fill in the docstring here
+    An improved heuristic over the single heuristic that takes into account the cost of each movement.
+    It is admissible because the heuristic calculates at most the true cost to the goal.
     :param 
     state: A state is represented by a tuple containing:
                 the current position (row, column) of Sammy the Spartan
@@ -148,7 +152,8 @@ def better_heuristic(state, problem):
 
 def gen_heuristic(state, problem):
     """
-    Fill in the docstring here
+    A heuristic for general problems that uses the manhattan distance. This heuristic works on multiple
+    medals. This heuristic is admissible because the sum to the goal divided by goals is optimistic
     :param 
     state: A state is represented by a tuple containing:
                 the current position (row, column) of Sammy the Spartan
@@ -160,6 +165,7 @@ def gen_heuristic(state, problem):
         goals = state[1]
         start = problem.start_state()[0]
         heru = []
+        sum  = 0
         position = state[0]
 
         # for goal in goals:
@@ -189,10 +195,12 @@ def gen_heuristic(state, problem):
                 D2 = 1
 
             # heru.append(((D2 * abs(position[0] - goal[0])) + (D * abs(position[1] - goal[1])), goal))
-            heru.append(max(((D2 * abs(position[0] - goal[0])), (D * abs(position[1] - goal[1]))), goal))
-        heru.sort()
+            # heru.append(max(((D2  * abs(position[0] - goal[0])), (D * abs(position[1] - goal[1]))), goal))
+            # sum += min((D2 * abs(position[0] - goal[0])), (D * abs(position[1] - goal[1])))
+            sum += (D2 * abs(position[0] - goal[0])) + (D * abs(position[1] - goal[1]))
+        # heru.sort()
 
-        return min(heru)[0]
+        return sum / len(goals)
     return 0
 
 
@@ -205,3 +213,16 @@ def manhattan_distance(point1, point2):
     """
     # Enter your code here and remove the pass statement below
     return abs(point1[0] - point2[0]) + abs(point1[1] - point2[1])
+
+
+def min_distance(point1, other_points):
+    """
+    Find the minimum Manhattan distance from point1 to the other points
+    :param point1 (tuple) representing the coordinates of a point in a plane
+    :param other_points (set of tuples) representing several points in a plane
+    :return: (integer) maximum Manhattan distance from point1 to the other
+    points
+
+    """
+    if other_points:
+        return min([manhattan_distance(point1, point) for point in other_points])
