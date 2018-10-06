@@ -174,7 +174,9 @@ def abdl(game_state, depth):
     :return:  a tuple representing the row column of the best move
     """
     # Enter your code here and remove the raise statement below
-    raise NotImplementedError
+    a = -sys.maxsize
+    b = sys.maxsize
+    return max(game_state.possible_moves(), key=lambda node: abdl_value(game_state.successor(node, 'AI'), 'user', a, b, depth))
 
 
 
@@ -188,7 +190,14 @@ def abdl_value(game_state, player, alpha, beta, depth):
     :return: (integer) utility of that state
     """
     # Enter your code here and remove the pass statement below
-    pass
+    terminal_state = game_state.is_win('AI') or game_state.is_win('player') or game_state.is_tie()
+    if depth == 0 or terminal_state:
+        return game_state.eval()
+    # If the agent is MAX return max-value
+    if player is 'AI':
+        return abdlmax_value(game_state, alpha, beta, depth)
+    # If the agent is MIN return min-value
+    return abdlmin_value(game_state, alpha, beta, depth)
 
 
 def abdlmax_value(game_state, alpha, beta, depth):
@@ -200,7 +209,14 @@ def abdlmax_value(game_state, alpha, beta, depth):
     :return: (integer) utility (evaluation function) of that state
     """
     # Enter your code here and remove the pass statement below
-    pass
+    a = alpha
+    v = -sys.maxsize
+    for move in game_state.possible_moves():
+        v = max([v, abdl_value(game_state.successor(move, 'AI'), 'user', a, beta, depth -1)])
+        if v >= beta:
+            return v
+        a = max(a, v)
+    return v
 
 
 def abdlmin_value( game_state, alpha, beta, depth):
@@ -212,5 +228,12 @@ def abdlmin_value( game_state, alpha, beta, depth):
     :return: (integer) utility (evaluation function) of that state
     """
     # Enter your code here and remove the pass statement below
-    pass
+    b = beta
+    v = sys.maxsize
+    for move in game_state.possible_moves():
+        v = min([v, abdl_value(game_state.successor(move, 'user'), 'AI', alpha, b, depth -1 )])
+        if v <= alpha:
+            return v
+        b = min([b, v])
+    return v
 
