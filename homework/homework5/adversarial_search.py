@@ -102,8 +102,10 @@ def alphabeta(game_state):
     :param game_state: GameState object
     :return:  a tuple representing the row column of the best move
     """
-    # Enter your code here and remove the raise statement below
-    raise NotImplementedError
+    # Enter your code here and remove the raise statement below\
+    a = -sys.maxsize
+    b = sys.maxsize
+    return max(game_state.possible_moves(), key=lambda node: ab_value(game_state.successor(node, 'AI'), 'user', a, b))
 
 
 def ab_value(game_state, player, alpha, beta):
@@ -115,7 +117,17 @@ def ab_value(game_state, player, alpha, beta):
     :return: (integer) value of that state -1, 0 or 1
     """
     # Enter your code here and remove the pass statement below
-    pass
+    if game_state.is_win('AI'):
+        return 1
+    if game_state.is_win('user'):
+        return -1
+    if game_state.is_tie():
+        return 0
+    # If the agent is MAX return max-value
+    if player is 'AI':
+        return abmax_value(game_state, alpha, beta)
+    # If the agent is MIN return min-value
+    return abmin_value(game_state, alpha, beta)
 
 
 def abmax_value(game_state, alpha, beta):
@@ -126,7 +138,14 @@ def abmax_value(game_state, alpha, beta):
     :return: (integer) value of that state -1, 0 or 1
     """
     # Enter your code here and remove the pass statement below
-    pass
+    a = alpha
+    v = -sys.maxsize
+    for move in game_state.possible_moves():
+        v = max([v, ab_value(game_state.successor(move, 'AI'), 'user', a, beta)])
+        if v >= beta:
+            return v
+        a = max(a, v)
+    return v
 
 
 def abmin_value(game_state, alpha, beta):
@@ -137,7 +156,14 @@ def abmin_value(game_state, alpha, beta):
     :return: (integer) value of that state -1, 0 or 1
     """
     # Enter your code here and remove the pass statement below
-    pass
+    b = beta
+    v = sys.maxsize
+    for move in game_state.possible_moves():
+        v = min([v, ab_value(game_state.successor(move, 'user'), 'AI', alpha, b)])
+        if v <= alpha:
+            return v
+        b = min([b, v])
+    return v
 
 
 def abdl(game_state, depth):
