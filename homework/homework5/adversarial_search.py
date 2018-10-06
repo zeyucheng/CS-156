@@ -16,6 +16,7 @@ Your task for homework 5 is to implement:
 import random
 import sys
 
+
 def rand(game_state):
     """
     Generate a random move.
@@ -38,8 +39,7 @@ def minimax(game_state):
     :param game_state: GameState object
     :return:  a tuple representing the row column of the best move
     """
-    # Enter your code here and remove the raise statement below
-    raise NotImplementedError
+    return max(game_state.possible_moves(), key=lambda node: value(game_state.successor(node, 'AI'), 'user'))
 
 def value(game_state, player):
     """
@@ -48,8 +48,18 @@ def value(game_state, player):
     :param player: (string) 'user' or 'AI' - AI is max
     :return: (integer) value of that state -1, 0 or 1
     """
-    # Enter your code here and remove the pass statement below
-    pass
+    if game_state.is_win('AI'):
+        return 1
+    if game_state.is_win('user'):
+        return -1
+    if game_state.is_tie():
+        return 0
+    # If the agent is MAX return max-value
+    if player is 'AI':
+        return max_value(game_state)
+    # If the agent is MIN return min-value
+    return min_value(game_state)
+
 
 def max_value(game_state):
     """
@@ -58,8 +68,14 @@ def max_value(game_state):
     :param game_state: non-terminal GameState object
     :return: (integer) value of that state -1, 0 or 1
     """
-    # Enter your code here and remove the pass statement below
-    pass
+    v = -sys.maxsize
+    for move in game_state.possible_moves():
+        v1 = value(game_state.successor(move, 'AI'), 'user') # not good
+        tup = [v, v1]
+        # print("TUP", tup)
+        v = max(tup)
+        # print('MAX: ', v)
+    return v
 
 def min_value(game_state):
     """
@@ -69,8 +85,14 @@ def min_value(game_state):
     :return: (integer) value of that state -1, 0 or 1
     """
     # Enter your code here and remove the pass statement below
-    pass
-
+    v = sys.maxsize
+    for move in game_state.possible_moves():
+        v1 = value(game_state.successor(move, 'user'), 'AI') # little gud
+        tup = [v, v1]
+        # print("TUP", tup)
+        v = min(tup)
+        # print('MIN: ', v)
+    return v
 
 
 def alphabeta(game_state):
