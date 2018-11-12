@@ -190,8 +190,13 @@ def abdl_value(game_state, player, alpha, beta, depth):
     :return: (integer) utility of that state
     """
     # Enter your code here and remove the pass statement below
-    terminal_state = game_state.is_win('AI') or game_state.is_win('player') or game_state.is_tie()
-    if depth == 0 or terminal_state:
+    if player == 'AI' and game_state.is_win('AI'):
+        return 1
+    if player == 'user' and game_state.is_win('user'):
+        return -1
+    if game_state.is_tie():
+        return 0
+    if depth == 0:
         return game_state.eval()
     # If the agent is MAX return max-value
     if player is 'AI':
