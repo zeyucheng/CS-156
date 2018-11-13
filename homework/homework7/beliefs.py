@@ -50,6 +50,7 @@ class Belief(object):
         """
         return self.current_distribution
 
+
     def update(self, color, sensor_position, model):
         """
         Update the belief distribution based on new evidence:  our agent
@@ -66,8 +67,23 @@ class Belief(object):
         # treasure may be accessed by calling model.pcolorgivendist.
         # Don't forget to normalize.
         # Don't forget to update self.open since sensor_position has now been
-        # observed.
-        pass
+        # observed
+
+        # Iterate over All positions in the grid and update the probability of finding treasure
+        for p in self.current_distribution:
+            self.current_distribution[p] *= model.pcolorgivendist(color, utils.manhattan_distance(p, sensor_position))
+
+        # Normalize
+        for p in self.current_distribution:
+            self.current_distribution[p] = self.current_distribution[p]/sum(self.current_distribution.values())
+
+        # Quick check that the values are normalized
+        # print('CHECK',  sum(self.current_distribution.values()))
+
+        # Remove sensor_position from the open set
+        self.open.discard(sensor_position)
+
+
 
     def recommend_sensing(self):
         """
@@ -81,4 +97,16 @@ class Belief(object):
            next measurement
         """
         # Enter your code and remove the statement below
-        return NotImplemented
+
+        # best = max(self.open, key=lambda p:self.current_distribution[p])
+
+        open_prob = {p: self.current_distribution[p] for p in self.open}
+        print('open prob', open_prob)
+        best = max(open_prob, key=lambda p: open_prob[p])
+        if self.current_distribution[best] == 0:
+            observed_max = max(self.current_distribution, lambda p:self.current_distribution[p])
+            print('OBSERVED MAX', observed_max)
+            second_best = utils.closest_point(observed_max, self.open)
+            print('SB', second_best)
+            return second_best
+        return best

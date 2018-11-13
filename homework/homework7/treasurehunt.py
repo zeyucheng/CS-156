@@ -160,7 +160,7 @@ class Game(object):
                                              row * self.square_size,
                                              (column + 1) * self.square_size,
                                              (row + 1) * self.square_size,
-                                             fill = 'blue',
+                                             fill = '#83DFFD',
                                              outline = 'white')
                 self.text[column][row] = self.canvas.create_text(
                     (column + 0.5) * self.square_size,
@@ -298,6 +298,9 @@ def get_arguments():
     return size, mode
 
 def main():
+    # TODO remove for final submission
+    # remove randomness to get predictable results
+    random.seed(1)
     size, mode = get_arguments()
     # Instantiate a root window
     root = tkinter.Tk()
