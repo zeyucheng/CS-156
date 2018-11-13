@@ -14,6 +14,7 @@ Your task for homework 7 is to implement:
 """
 import utils
 
+
 class Belief(object):
     """
     Belief class used to track the belief distribution based on the sensing
@@ -38,7 +39,6 @@ class Belief(object):
         # Initialize to a uniform distribution
         self.current_distribution = {pos: 1 / (size ** 2) for pos in self.open}
 
-
     def get_beliefs(self):
         """
         Accessor method for the belief distribution
@@ -49,7 +49,6 @@ class Belief(object):
           accumulated so far.
         """
         return self.current_distribution
-
 
     def update(self, color, sensor_position, model):
         """
@@ -83,15 +82,13 @@ class Belief(object):
         # Remove sensor_position from the open set
         self.open.discard(sensor_position)
 
-
-
     def recommend_sensing(self):
         """
         Recommend where we should take the next measurement in the grid.
         The position should be the most promising unobserved location.
         If all remaining unobserved locations have a probability of 0, return
         the unobserved location that is closest to the (observed) location with
-        the highest probablity.
+        the highest probability.
 
         :return: tuple representing the position where we should take the
            next measurement
@@ -100,13 +97,22 @@ class Belief(object):
 
         # best = max(self.open, key=lambda p:self.current_distribution[p])
 
+        # Create dictionary with keys as the open and value as the probability
         open_prob = {p: self.current_distribution[p] for p in self.open}
-        print('open prob', open_prob)
+
+        # Instrumentation
+        # print('open prob', open_prob)
+
+        # Get the open position with the best probability
         best = max(open_prob, key=lambda p: open_prob[p])
+
+        # check if all open probabilities are 0
         if self.current_distribution[best] == 0:
-            observed_max = max(self.current_distribution, lambda p:self.current_distribution[p])
-            print('OBSERVED MAX', observed_max)
+            # Find the position with the highest probability from the visited
+            observed_max = max(self.current_distribution.keys(), key=lambda p: self.current_distribution[p])
+            # print('OBSERVED MAX', observed_max)
+            # get the location from open that is closest to the observed max above
             second_best = utils.closest_point(observed_max, self.open)
-            print('SB', second_best)
+            # print('SB', second_best)
             return second_best
         return best

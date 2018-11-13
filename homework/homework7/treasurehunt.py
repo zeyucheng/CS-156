@@ -300,7 +300,7 @@ def get_arguments():
 def main():
     # TODO remove for final submission
     # remove randomness to get predictable results
-    random.seed(1)
+    # random.seed(1)
     size, mode = get_arguments()
     # Instantiate a root window
     root = tkinter.Tk()
