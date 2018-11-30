@@ -13,6 +13,8 @@ __init__, init_weights and train have been implemented for you.
 Your task for homework 8 is to implement predict and update_weights.
 """
 from vectors import Vector
+from random import randint
+
 
 class Perceptron(object):
     """
@@ -76,7 +78,14 @@ class Perceptron(object):
         :return: None
         """
         # Enter your code and remove the statement below
-        return NotImplemented
+        prediction = self.predict(feature_vector)
+        if prediction != training_label:
+            right = self.weights[training_label]
+            wrong = self.weights[prediction]
+            self.weights[training_label] = right-feature_vector
+            self.weights[prediction] = wrong+feature_vector
+            # print('hallo')
+
 
     def predict(self, feature_vector):
         """
@@ -86,4 +95,15 @@ class Perceptron(object):
         :return: label: One of the labels in self.labels
         """
         # Enter your code and remove the statement below
-        return NotImplemented
+        p = 0
+        label = ''
+        for weight in self.weights:
+            vector = self.weights[weight]
+            sums = vector*feature_vector
+            if p > sums:
+                label = weight
+                p = sums
+        if label == '':
+            label = self.valid_labels[randint(0, len(self.valid_labels)-1)]
+        return label
+
